@@ -1,0 +1,47 @@
+# SALVAR IMAGENS NO PYCHARM E TESTAR ESTE CÓDIGO
+
+from tkinter import *
+import time
+
+geral = Tk()
+geral.title("CriptoBot")
+geral.geometry('600x600+610+153')
+geral.iconbitmap(default='icones\\bot.ico') # Baixar foto do bot e deixar como ícone da janela
+geral.resizable(width=1, height=1)
+
+# Funções
+# Cria nova janela após o login
+def nova_janela():
+    geral1 = tk()
+    geral1.title("CriptoBot")
+    geral1.geometry('600x600+610+153')
+    
+# Timer para apagar a primeira tela e redirecionar para a segunda   
+    geral.destroy()
+    time.sleep(1.0)
+
+# Variáveis gerais
+# Variável para ocultar texto digitado no campo de senha
+hide_ps = StringVar()
+
+# Importando as imagens
+img_fundo = PhotoImage(file='imagens\\fundo.png') # Salvar imagem como fundo, na pasta imagens dentro do Pycharm
+img_botao = PhotoImage(file='imagens\\bt-img.png') # Imagem do botao, fazer o mesmo processo
+
+# Labels
+
+lab_fundo = Label(geral, image=img_fundo)
+lab_fundo.pack()
+
+# Caixas de texto
+en_usu = Entry(geral, bd=2, font=('Calibri', 13), justify=CENTER)
+en_usu.place(width=392, height=45, x=49, y=138)
+
+en_senha = Entry(geral, textvariable=hide_ps, show="*", bd=2, font=('Calibri', 13), justify=CENTER)
+en_senha.place(width=392, height=45, x=49, y=244)
+
+# Botão de login
+bt_login = Button(geral, bd=0, image=img_botao, command=nova_janela)
+bt_login.place(width=118, height=64, x=186, y=448)
+
+geral.mainloop()
