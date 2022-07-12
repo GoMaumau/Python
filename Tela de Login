@@ -51,6 +51,8 @@ img_botao2 = PhotoImage(file='imagens\\esq-bt.png') # Botao de senha esquecida
 lab_fundo = Label(geral, image=img_fundo)
 lab_fundo.pack()
 
+# Criar, eventualmente, demais labels
+
 # Caixas de texto
 # Caixa do login/usuário
 en_usu = Entry(geral, bd=2, font=('Calibri', 13), justify=CENTER)
