@@ -2,6 +2,7 @@
 
 from tkinter import *
 import time
+import sqlite3
 
 geral = Tk()
 geral.title("CriptoBot")
@@ -19,6 +20,11 @@ def nova_janela():
     geral.destroy()
     time.sleep(1.0)
     
+def logout():
+    geral1.close()
+    time.sleep(0.5)
+    geral.show()
+    
 # Encaminha para a tela de criação de conta    
 def nova_conta():
     geral2 = tk()
@@ -27,7 +33,29 @@ def nova_conta():
     
     geral.destroy()
     time.sleep(1.0)
-
+    
+def cadastrar():
+    usuario = geral2.en_usu1.text()
+    email = geral2.en_email.text()
+    senha = geral2.en_senha1.text()
+    c_senha = geral2.en_senha2.text()
+    
+    if(senha == c_senha):
+        try:
+            banco = sqlite3.connect('banco_cadastro.db')
+            cursor = banco.cursor()
+            cursor.execute("CREATE TABLE IF NOT EXISTS cadastro (usuario text, email text, senha text)")
+            cursor.execute("INSERT INTO cadastro VALUES ('"+usuario+',' +email+ ','+senha+')")
+            
+            banco.commit()
+            banco.close()
+            geral2.label.setText("Cadastro efetuado com sucesso")
+            
+        except sqlite3.Error as erro:
+            print('Erro ao inserir os dados: ',erro)
+    else:
+        geral2.label.setText("As senhas inseridas são diferentes")
+        
 # Encaminha para a tela de recuperação de senha    
 def esq_senha():
     geral3 = tk()
@@ -45,34 +73,59 @@ img_fundo = PhotoImage(file='imagens\\fundo.png') # Salvar imagem como fundo, na
 img_botao = PhotoImage(file='imagens\\bt-img.png') # Imagem do botao, fazer o mesmo processo
 img_botao1 = PhotoImage(file='imagens\\cad-bt.png') # Botao de cadastro
 img_botao2 = PhotoImage(file='imagens\\esq-bt.png') # Botao de senha esquecida
+img_fundo_cc = PhotoImage(file='imagens\\fundocc.png') # Imagem de fundo da criação de conta
+img_botao_cc = PhotoImage(file='imagens\\botaocc.png') # Botao de cadastro da página de criação de conta
 
 # Labels
 
-lab_fundo = Label(geral, image=img_fundo)
+lab_fundo = Label(geral, image=img_fundo) # Imagem de fundo da tela inicial
 lab_fundo.pack()
+
+lab_fundo1 = Label(geral2, image=img_fundo_cc) # Imagem de fundo da página de criação de contas
+lab.fundo1.pack()
 
 # Criar, eventualmente, demais labels
 
-# Caixas de texto
+# Caixas de texto da página principal
 # Caixa do login/usuário
 en_usu = Entry(geral, bd=2, font=('Calibri', 13), justify=CENTER)
 en_usu.place(width=392, height=45, x=49, y=138)
-
 # Caixa da senha
 en_senha = Entry(geral, textvariable=hide_pw, show="*", bd=2, font=('Calibri', 13), justify=CENTER)
 en_senha.place(width=392, height=45, x=49, y=244)
 
-# Botões
+# Botões da página principal
 # Login
 bt_login = Button(geral, bd=0, image=img_botao, command=nova_janela)
-bt_login.place(width=118, height=64, x=186, y=448)
-
+bt_login.place(width=118, height=64, x=186, y=348)
 # Cadastro
 bt_cad = Button(geral, bd=0, image=img_botao1, command=nova_conta)
 bt_cad.place(width=118, height=64, x=186, y=448)
-
 # Esqueci a senha
 bt_esq = Button(geral, bd=0, image=img_botao2, command=esq_senha)
-bt_esq.place(width=118, height=64, x=186, y=448)
+bt_esq.place(width=118, height=64, x=186, y=548)
+
+
+# Caixas de texto da criação de conta
+# Caixa do login/usuário
+en_usu1 = Entry(geral2, bd=2, font=('Calibri', 13), justify=CENTER)
+en_usu1.place(width=392, height=45, x=49, y=138)
+
+# Caixa do e-mail
+en_email = Entry(geral2, textvariable=hide_pw, show="*", bd=2, font=('Calibri', 13), justify=CENTER)
+en_email.place(width=392, height=45, x=49, y=244)
+
+# Caixa da senha
+en_senha1 = Entry(geral2, textvariable=hide_pw, show="*", bd=2, font=('Calibri', 13), justify=CENTER)
+en_senha1.place(width=392, height=45, x=49, y=344)
+
+# Caixa de confirmar senha
+en_senha2 = Entry(geral2, textvariable=hide_pw, show="*", bd=2, font=('Calibri', 13), justify=CENTER)
+en_senha2.place(width=392, height=45, x=49, y=444)
+
+# Botões da criação de contas
+# Confirmar cadastro
+bt_cad1 = Button(geral2, bd=0, image=img_botao_cc, command=cadastrar())
+bt_cad1.place(width=118, height=64, x=186, y=448)
 
 geral.mainloop()
